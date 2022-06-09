@@ -1,0 +1,10 @@
+{
+    "refresh_pull_down_to_refresh_data": "Pull down to refresh data",
+    "refresh_release_to_refresh_data": "Release to refresh data",
+    "refresh_data": "Refresh data",
+    "refresh_finish": "Load complete!",
+    "refresh_pull_up_loading": "Pull up to load data",
+    "refresh_failed_to_load": "Failed to load! Click to try again!",
+    "refresh_let_go": "Let go and load more!",
+    "refresh_empty": "No more data!"
+}
