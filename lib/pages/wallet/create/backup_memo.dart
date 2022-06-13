@@ -49,90 +49,57 @@ class _BackupMemoState extends State<BackupMemo> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
-        child: CustomPageView(
-          leading: CustomPageView.getCloseLeading(
-            () {
-              // Routers.goBack(context);
-              Routers.push(context, HomeTabbar(), clearStack: true);
-            },
-          ),
-          title: CustomPageView.getTitle(title: "backup_memotitle".local()),
-          child: Container(
-            padding: EdgeInsets.all(24.width),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text(
-                          "backup_pleasewrite".local(),
-                          style: TextStyle(
-                            fontSize: 14.font,
-                            fontWeight: FontWeightUtils.regular,
-                            color: ColorUtils.fromHex("#FF000000"),
-                          ),
+    return CustomPageView(
+      child: Container(
+        padding: EdgeInsets.all(24.width),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "backup_pleasewrite".local(),
+                        style: TextStyle(
+                          fontSize: 28.font,
+                          fontWeight: FontWeightUtils.bold,
+                          color: ColorUtils.FF363B3E,
                         ),
-                        SortIndexView(
-                          memos: _datas,
-                          offsetWidth: 48.width,
-                          bgColor: ColorUtils.fromHex("#FFF6F8FF"),
-                          type: SortIndexType.leftIndex,
-                          onTap: (int index) {},
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: 32.width),
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                              text: "backupmemo_warning".local() + "：\n",
-                              style: TextStyle(
-                                color: ColorUtils.fromHex("#FFFF233E"),
-                                fontSize: 14.font,
-                                fontWeight: FontWeightUtils.semiBold,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "backupmemo_warningvalue".local(),
-                                  style: TextStyle(
-                                    color: ColorUtils.fromHex("#FFFF233E"),
-                                    fontSize: 12.font,
-                                    fontWeight: FontWeightUtils.regular,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(top: 16.width),
+                      child: Text(
+                        "backup_pleasewrite01".local(),
+                        style: TextStyle(
+                          fontSize: 16.font,
+                          fontWeight: FontWeightUtils.regular,
+                          color: ColorUtils.FF8F9397,
+                        ),
+                      ),
+                    ),
+                    SortIndexView(
+                      memos: _datas,
+                      offsetWidth: 48.width,
+                      bgColor: ColorUtils.fromHex("#FFEBEEEF"),
+                      type: SortIndexType.leftIndex,
+                      onTap: (int index) {},
+                    ),
+                  ],
                 ),
-                NextButton(
-                  onPressed: _backMemo,
-                  bgc: ColorUtils.blueColor,
-                  margin: EdgeInsets.only(top: 10.width),
-                  textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.font,
-                      fontWeight: FontWeightUtils.medium),
-                  title: "backupmemo_next".local(),
-                ),
-                NextButton(
-                  onPressed: _copyMemo,
-                  textStyle: TextStyle(
-                      color: ColorUtils.blueColor,
-                      fontSize: 14.font,
-                      fontWeight: FontWeightUtils.regular),
-                  title: "backupmemo_copymemo".local(),
-                ),
-              ],
+              ),
             ),
-          ),
-        ));
+            NextButton(
+              onPressed: _backMemo,
+              margin: EdgeInsets.only(top: 10.width),
+              title: "button_next".local(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -13,7 +13,6 @@ import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/url.dart';
 import 'package:beewallet/net/wallet_services.dart';
 import 'package:beewallet/pages/tabbar/tabbar.dart';
-import 'package:beewallet/pages/wallet/create/backup_tip_memo.dart';
 import 'package:beewallet/state/wallet_state.dart';
 import 'package:beewallet/utils/custom_toast.dart';
 import 'package:beewallet/utils/encode.dart';
@@ -335,7 +334,7 @@ class TRWallet {
       //如果其他则去tabbar
       //关闭备份则去tababr
       if (kLeadType == KLeadType.Memo) {
-        Routers.push(context, BackupTipMemo(memo: content, walletID: walletID));
+        // Routers.push(context, BackupTipMemo(memo: content, walletID: walletID));
       } else {
         Routers.push(context, HomeTabbar(), clearStack: true);
       }

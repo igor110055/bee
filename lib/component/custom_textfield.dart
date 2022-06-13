@@ -187,6 +187,7 @@ class CustomTextField extends StatefulWidget {
       fillColor: fillColor,
       filled: true,
       contentPadding: contentPadding,
+      counter: Container(),
       counterText: counterText,
       counterStyle: counterStyle,
     );
@@ -203,7 +204,7 @@ class CustomTextField extends StatefulWidget {
     int? maxLength,
     int maxLines = 1,
     EdgeInsetsGeometry contentPadding =
-        const EdgeInsets.fromLTRB(10, 15, 10, 15),
+        const EdgeInsets.fromLTRB(16, 23, 16, 23),
     bool isPasswordText = false,
     bool isScanText = false,
     VoidCallback? onPressBack,
@@ -216,14 +217,17 @@ class CustomTextField extends StatefulWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 5),
-            child: Text(
-              titleText ??= "",
-              style: TextStyle(
-                fontSize: 14.font,
-                fontWeight: FontWeightUtils.medium,
-                color: ColorUtils.fromHex("#99000000"),
+          Visibility(
+            visible: titleText != null,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 14.width),
+              child: Text(
+                titleText ??= "",
+                style: TextStyle(
+                  fontSize: 16.font,
+                  fontWeight: FontWeightUtils.regular,
+                  color: ColorUtils.fromHex("#FF8F9397"),
+                ),
               ),
             ),
           ),
@@ -234,23 +238,24 @@ class CustomTextField extends StatefulWidget {
               maxLength: maxLength,
               maxLines: maxLines,
               style: TextStyle(
-                fontSize: 14.font,
-                fontWeight: FontWeightUtils.medium,
-                color: ColorUtils.fromHex("#FF000000"),
+                fontSize: 16.font,
+                fontWeight: FontWeightUtils.regular,
+                color: ColorUtils.fromHex("#FF363B3E"),
               ),
               enabled: enabled,
-              decoration: CustomTextField.getUnderLineDecoration(
-                  underLineColor: ColorUtils.lineColor,
-                  focusedUnderLineColor: ColorUtils.blueColor,
-                  underLineWidth: 0.5,
+              decoration: CustomTextField.getBorderLineDecoration(
                   hintText: hintText,
-                  fillColor: fillColor,
+                  fillColor: ColorUtils.fromHex("#FFEBEEEF"),
+                  borderColor: ColorUtils.fromHex("#FFEBEEEF"),
+                  focusedBorderColor: ColorUtils.fromHex("#FFEBEEEF"),
+                  borderRadius: 8,
                   hintStyle: TextStyle(
-                    fontSize: 14.font,
+                    fontSize: 16.font,
                     fontWeight: FontWeightUtils.regular,
-                    color: ColorUtils.fromHex("#66000000"),
+                    color: ColorUtils.fromHex("#FFB9BFC4"),
                   ),
-                  contentPadding: contentPadding),
+                  contentPadding: contentPadding,
+                  context: context),
             ),
             isPasswordText
                 ? Positioned(

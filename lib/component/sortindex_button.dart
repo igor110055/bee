@@ -35,7 +35,7 @@ class SortIndexButton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
         color: Colors.white,
       ),
       child: Stack(
@@ -47,21 +47,21 @@ class SortIndexButton extends StatelessWidget {
               maxLines: 1,
               minFontSize: 6,
               style: TextStyle(
-                fontSize: 14.font,
-                fontWeight: FontWeightUtils.medium,
-                color: ColorUtils.fromHex("#CC000000"),
+                fontSize: 16.font,
+                fontWeight: FontWeightUtils.bold,
+                color: ColorUtils.FF363B3E,
               ),
             ),
           ),
           Positioned(
-            left: 0,
-            bottom: 0,
+            right: 4,
+            top: 4,
             child: Text(
-              (item.index + 1).toString(),
+              "#" + (item.index + 1).toString(),
               style: TextStyle(
-                fontSize: 24.font,
-                fontWeight: FontWeightUtils.medium,
-                color: ColorUtils.fromHex("#0D000000"),
+                fontSize: 12.font,
+                fontWeight: FontWeightUtils.regular,
+                color: ColorUtils.fromHex("#FFB9BFC4"),
               ),
             ),
           ),

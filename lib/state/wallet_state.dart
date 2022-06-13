@@ -11,9 +11,7 @@ import 'package:beewallet/model/wallet/tr_wallet.dart';
 import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/chain_services.dart';
 import 'package:beewallet/net/wallet_services.dart';
-// import 'package:beewallet/pages/browser/dapp_browser.dart';
-import 'package:beewallet/pages/wallet/create/backup_tip_memo.dart';
-import 'package:beewallet/pages/wallet/create/create_wallet_page.dart';
+import 'package:beewallet/pages/wallet/config_wallet_avatar.dart';
 import 'package:beewallet/pages/wallet/transfer/receive_page.dart';
 import 'package:beewallet/pages/wallet/transfer/transfer_list.dart';
 import 'package:beewallet/pages/wallet/transfer/transfer_payment.dart';
@@ -549,10 +547,10 @@ class CurrentChooseWalletState with ChangeNotifier {
   }
 
   void backupWallet(BuildContext context, {required TRWallet wallet}) {
-    wallet.showLockPin(context, exportPrv: false, confirmPressed: (value) {
-      Routers.push(
-          context, BackupTipMemo(memo: value, walletID: wallet.walletID!));
-    }, cancelPress: null, infoCoinType: null);
+    // wallet.showLockPin(context, exportPrv: false, confirmPressed: (value) {
+    //   Routers.push(
+    //       context, BackupTipMemo(memo: value, walletID: wallet.walletID!));
+    // }, cancelPress: null, infoCoinType: null);
   }
 
   void modifyPwd(BuildContext context,

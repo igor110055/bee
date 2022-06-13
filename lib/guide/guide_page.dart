@@ -1,7 +1,7 @@
 import 'package:beewallet/component/build_point.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
-
+import '../pages/wallet/import/import_tip.dart';
 import '../public.dart';
 import 'legal_page.dart';
 
@@ -56,7 +56,9 @@ class _GuidePageState extends State<GuidePage> {
     Routers.push(context, LegalPage());
   }
 
-  void _importNewWallet() {}
+  void _importNewWallet() {
+    Routers.push(context, ImportTip());
+  }
 
   @override
   Widget build(BuildContext context) {

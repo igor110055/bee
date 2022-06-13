@@ -1,7 +1,7 @@
 import 'package:beewallet/component/wallets_manager_cell.dart';
 import 'package:beewallet/model/wallet/tr_wallet.dart';
 import 'package:beewallet/pages/wallet/create/create_tip.dart';
-import 'package:beewallet/pages/wallet/create/create_wallet_page.dart';
+import 'package:beewallet/pages/wallet/config_wallet_avatar.dart';
 import 'package:beewallet/pages/wallet/import/import_wallets.dart';
 import 'package:beewallet/pages/wallet/wallets/wallets_setting.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class _WalletsManagerState extends State<WalletsManager> {
       // Routers.push(context, const CreateTip(type: KCreateType.create));
       return;
     }
-    Routers.push(context, CreateWalletPage());
+    Routers.push(context, ConfigWalletAvatar());
   }
 
   void _imports() async {
@@ -48,7 +48,7 @@ class _WalletsManagerState extends State<WalletsManager> {
       // Routers.push(context, const CreateTip(type: KCreateType.import));
       return;
     }
-    Routers.push(context, ImportsWallet());
+    // Routers.push(context, ImportsWallet());
   }
 
   @override

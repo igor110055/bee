@@ -59,7 +59,7 @@ class SortIndexView extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Wrap(
         spacing: _paddingOffset,

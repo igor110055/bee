@@ -15,8 +15,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../public.dart';
 import 'create/create_tip.dart';
-import 'create/create_wallet_page.dart';
-import 'restore/restore_wallet_page.dart';
+import 'config_wallet_avatar.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key? key}) : super(key: key);
@@ -41,7 +40,7 @@ class _WalletPageState extends State<WalletPage> {
       // Routers.push(context, const CreateTip(type: KCreateType.create));
       return;
     }
-    Routers.push(context, CreateWalletPage());
+    Routers.push(context, ConfigWalletAvatar());
   }
 
   void _restore() async {
@@ -50,7 +49,7 @@ class _WalletPageState extends State<WalletPage> {
       // Routers.push(context, const CreateTip(type: KCreateType.restore));
       return;
     }
-    Routers.push(context, RestoreWalletPage());
+    // Routers.push(context, RestoreWalletPage());
   }
 
   void _tapAssets() {

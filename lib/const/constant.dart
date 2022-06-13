@@ -336,4 +336,9 @@ final List<Map> beesIcons = [
         "https://www.beelaunchpad.org/ipfs/Qme9xpZbUHMKG1TxY9yRpCzXbn5nWYaWkAan4szMMowTwQ",
     "title": "HASH BEE",
   },
+  {
+    "image":
+        "https://www.beelaunchpad.org/ipfs/Qmf85CVekG3234bzzJsmzgyGRN4hPZi9wcyCemanLseZoY",
+    "title": "BUMBLE BEE",
+  }
 ];

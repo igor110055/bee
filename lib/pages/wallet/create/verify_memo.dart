@@ -26,6 +26,11 @@ class _VerifyMemoState extends State<VerifyMemo> {
   List<SortViewItem> _bottomList = [];
   List<String> _originList = [];
   bool _isHWrong = false;
+
+  TextEditingController _word01EC = TextEditingController();
+  TextEditingController _word02EC = TextEditingController();
+  TextEditingController _word03EC = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -151,7 +156,6 @@ class _VerifyMemoState extends State<VerifyMemo> {
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      title: CustomPageView.getTitle(title: "backup_memotitle".local()),
       child: Container(
         padding: EdgeInsets.all(24.width),
         child: Column(
@@ -160,46 +164,37 @@ class _VerifyMemoState extends State<VerifyMemo> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
-                      "verifymemo_nextclick".local(),
-                      style: TextStyle(
-                        fontSize: 14.font,
-                        fontWeight: FontWeightUtils.regular,
-                        color: ColorUtils.fromHex("#FF000000"),
-                      ),
-                    ),
-                    SortIndexView(
-                      memos: _topList,
-                      offsetWidth: 48.width,
-                      bgColor: ColorUtils.fromHex("#FFF6F8FF"),
-                      type: SortIndexType.wrongIndex,
-                      onTap: (int index) {
-                        print("wrongIndex $index");
-                        _topListAction(index);
-                      },
-                    ),
-                    Opacity(
-                      opacity: _isHWrong ? 1 : 0,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 10.width,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "verifymemo_verifwrong".local(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12.font,
-                            fontWeight: FontWeightUtils.regular,
-                            color: ColorUtils.fromHex("#FFFF233E"),
-                          ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "backup_pleaseverify".local(),
+                        style: TextStyle(
+                          fontSize: 28.font,
+                          fontWeight: FontWeightUtils.bold,
+                          color: ColorUtils.FF363B3E,
                         ),
                       ),
                     ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(top: 16.width),
+                      child: Text(
+                        "backup_pleaseselect".local(),
+                        style: TextStyle(
+                          fontSize: 16.font,
+                          fontWeight: FontWeightUtils.regular,
+                          color: ColorUtils.FF8F9397,
+                        ),
+                      ),
+                    ),
+                    CustomTextField.getInputTextField(context,
+                        padding: EdgeInsets.only(top: 0.width),
+                        controller: _word01EC,
+                        titleText: "111"),
                     SortIndexView(
                       memos: _bottomList,
                       margin: EdgeInsets.only(top: 4.width),
-                      offsetWidth: 48.width,
+                      offsetWidth: 50.width,
                       bgColor: Colors.white,
                       type: SortIndexType.actionIndex,
                       onTap: (int index) {
@@ -214,13 +209,8 @@ class _VerifyMemoState extends State<VerifyMemo> {
               onPressed: () {
                 _verifyAction();
               },
-              bgc: ColorUtils.blueColor,
-              enableColor: ColorUtils.fromHex("#667685A2"),
-              textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.font,
-                  fontWeight: FontWeightUtils.medium),
-              title: "verifymemo_verifystate".local(),
+              enabled: _isHWrong,
+              title: "button_next".local(),
             ),
           ],
         ),

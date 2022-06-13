@@ -33,5 +33,19 @@
     "createwallet_title": "Wallet Name",
     "createwallet_walletname": "Choose a wallet name",
     "createwallet_tip": "Tip：you can important NFTs and set them as your avatar",
-    "createwallet_tip01": "select an icon to use as your wallet avatar"
+    "createwallet_tip01": "select an icon to use as your wallet avatar",
+    "backup_pleasewrite": "Your recovery phrase",
+    "backup_pleasewrite01": "Copy it exactly on paper and store it in a safe place that only you know.",
+    "backup_pleaseverify": "Verify Your recovery phrase",
+    "backup_pleaseselect": "Please select the fill in order according to your recovery phrase you backed up.",
+    "importwallet_tip": "Import your wallet",
+    "importwallet_tip02": "Learn more",
+    "importwallet_tip01": "Input your 12/18/24-word recovery phrase you were given when you created your previous wallet - it could be an external wallet hosted by other applications.",
+    "importwallet_prv": "Restore with Private Key",
+    "importwallet_memo": "Restore with recovery phrase",
+    "button_restore": "Restore",
+    "importwallet_hint01": "Please use space to separate the secret recoveryphrase",
+    "importwallet_hint02": "Enter the private key or scan the QR code,case sensitive.",
+    "importwallet_hint03": "Invalid Private Key,Please check your key.",
+    "importwallet_hint04": "Invalid word, please check the spelling."
 }

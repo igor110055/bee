@@ -2,7 +2,8 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import '../../../component/build_point.dart';
 import '../../../public.dart';
-import 'create_wallet_page.dart';
+import '../import/import_tip.dart';
+import '../config_wallet_avatar.dart';
 
 class CreateTip extends StatefulWidget {
   CreateTip({Key? key}) : super(key: key);
@@ -37,10 +38,8 @@ class _CreateTipState extends State<CreateTip> {
   }
 
   void _createNewWallet() {
-    Routers.push(context, CreateWalletPage());
+    Routers.push(context, ConfigWalletAvatar());
   }
-
-  void _importNewWallet() {}
 
   @override
   Widget build(BuildContext context) {
