@@ -399,6 +399,7 @@ class ColorUtils {
   static Color FF6B747B = fromHex("#FF6B747B");
   static Color FF666666 = fromHex("#FF666666");
   static Color FF8F9397 = fromHex("#FF8F9397");
+  static Color FFB9BFC4 = fromHex("#FFB9BFC4");
 
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();

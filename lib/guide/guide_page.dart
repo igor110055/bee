@@ -1,3 +1,4 @@
+import 'package:beewallet/component/build_point.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
@@ -56,40 +57,6 @@ class _GuidePageState extends State<GuidePage> {
   }
 
   void _importNewWallet() {}
-
-  Widget _buildPoint() {
-    return Container(
-      width: 60.width,
-      height: 10.width,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(_guideImages.length, (int index) {
-          return _pointWidget(index);
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _pointWidget(int index) {
-    var imageName = "";
-    if (index == _currentIndex) {
-      imageName = "guide/guide_choose.png";
-    } else {
-      imageName = "guide/guide_normal.png";
-    }
-
-    return Container(
-      width: 9.width,
-      height: 9.width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(ASSETS_IMG + imageName),
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +127,10 @@ class _GuidePageState extends State<GuidePage> {
                 ),
               ),
               Expanded(child: Container()),
-              _buildPoint(),
+              BuildPoint(
+                currentIndex: _currentIndex,
+                maxCount: _guideImages.length,
+              ),
               NextButton(
                 margin: EdgeInsets.only(top: 30.width),
                 onPressed: _createNewWallet,

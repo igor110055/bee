@@ -314,3 +314,26 @@ Widget loadArrowRightIcon() {
     height: 20,
   );
 }
+
+final List<Map> beesIcons = [
+  {
+    "image":
+        "https://www.beelaunchpad.org/ipfs/QmY2k9pnxtFDiS4D5XnqN9EcbnC4dnvem1jR29FsbSN4Xr",
+    "title": "KNIGHT BEE",
+  },
+  {
+    "image":
+        "https://www.beelaunchpad.org/ipfs/QmTXVYYsb5joocob7uegZqKCbVRcwXKbnWqN4CMzh1UoXc",
+    "title": "QUEEN BEE",
+  },
+  {
+    "image":
+        "https://www.beelaunchpad.org/ipfs/QmR4VLuaoCTs7XJK1MrrNpHbqMfYKxFkTtT6o5D1mWDdNd",
+    "title": "LUCKY BEE",
+  },
+  {
+    "image":
+        "https://www.beelaunchpad.org/ipfs/Qme9xpZbUHMKG1TxY9yRpCzXbn5nWYaWkAan4szMMowTwQ",
+    "title": "HASH BEE",
+  },
+];

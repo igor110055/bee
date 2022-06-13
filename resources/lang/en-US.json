@@ -29,5 +29,9 @@
     "createtip_02_content": "Do not share your recovery phrase with anyone.cannot be reset and Bee does not have access to it.",
     "createtip_03_title": "Safe storage tips",
     "createtip_03_content": "Write down your recovery phrase and keep it in a secure offline location. Do not store screenshots of it online.",
-    "button_backup":"Back Up My Recovery Phrase"
+    "button_backup": "Back Up My Recovery Phrase",
+    "createwallet_title": "Wallet Name",
+    "createwallet_walletname": "Choose a wallet name",
+    "createwallet_tip": "Tip：you can important NFTs and set them as your avatar",
+    "createwallet_tip01": "select an icon to use as your wallet avatar"
 }

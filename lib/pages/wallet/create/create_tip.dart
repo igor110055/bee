@@ -1,6 +1,8 @@
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import '../../../component/build_point.dart';
 import '../../../public.dart';
+import 'create_wallet_page.dart';
 
 class CreateTip extends StatefulWidget {
   CreateTip({Key? key}) : super(key: key);
@@ -34,49 +36,11 @@ class _CreateTipState extends State<CreateTip> {
     super.initState();
   }
 
-  void onDonePress() {
-    updateSkin();
+  void _createNewWallet() {
+    Routers.push(context, CreateWalletPage());
   }
-
-  void updateSkin() async {}
-
-  void _createNewWallet() {}
 
   void _importNewWallet() {}
-
-  Widget _buildPoint() {
-    return Container(
-      width: 60.width,
-      height: 10.width,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(_guideImages.length, (int index) {
-          return _pointWidget(index);
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _pointWidget(int index) {
-    var imageName = "";
-    if (index == _currentIndex) {
-      imageName = "guide/guide_choose.png";
-    } else {
-      imageName = "guide/guide_normal.png";
-    }
-
-    return Container(
-      width: 9.width,
-      height: 9.width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(ASSETS_IMG + imageName),
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +106,10 @@ class _CreateTipState extends State<CreateTip> {
               ),
             ),
             Expanded(child: Container()),
-            _buildPoint(),
+            BuildPoint(
+              currentIndex: _currentIndex,
+              maxCount: _guideImages.length,
+            ),
             NextButton(
               margin: EdgeInsets.only(top: 30.width, bottom: 45.width),
               onPressed: _createNewWallet,

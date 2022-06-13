@@ -119,7 +119,7 @@ class CurrentChooseWalletState with ChangeNotifier {
     _currencyType = SPManager.getAppCurrencyMode();
     requestAssets();
     _initSuggortCoinTypes();
-    _configTimerRequest();
+    // _configTimerRequest();
     notifyListeners();
     return _currentWallet;
   }
