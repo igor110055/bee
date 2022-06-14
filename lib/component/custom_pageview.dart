@@ -147,31 +147,34 @@ class CustomPageView extends StatelessWidget {
       },
       child: hiddenAppBar == true
           ? _annotatedRegion()
-          : Scaffold(
-              resizeToAvoidBottomInset: hiddenResizeToAvoidBottomInset,
-              appBar: AppBar(
-                title: title,
-                centerTitle: true,
-                elevation: elevation,
-                bottom: bottom,
-                backgroundColor: Colors.white,
-                actions: actions,
-                leading: hiddenLeading == true
-                    ? Text("")
-                    : Routers.canGoPop(context) == true
-                        ? leading ??
-                            getBack(() {
-                              if (leadBack != null) {
-                                leadBack!();
-                              } else {
-                                Routers.goBackWithParams(context, {});
-                              }
-                            })
-                        : Text(""),
+          : AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.dark,
+              child: Scaffold(
+                resizeToAvoidBottomInset: hiddenResizeToAvoidBottomInset,
+                appBar: AppBar(
+                  title: title,
+                  centerTitle: true,
+                  elevation: elevation,
+                  bottom: bottom,
+                  backgroundColor: Colors.white,
+                  actions: actions,
+                  leading: hiddenLeading == true
+                      ? Text("")
+                      : Routers.canGoPop(context) == true
+                          ? leading ??
+                              getBack(() {
+                                if (leadBack != null) {
+                                  leadBack!();
+                                } else {
+                                  Routers.goBackWithParams(context, {});
+                                }
+                              })
+                          : Text(""),
+                ),
+                backgroundColor: backgroundColor,
+                bottomNavigationBar: this.bottomNavigationBar,
+                body: _body(),
               ),
-              backgroundColor: backgroundColor,
-              bottomNavigationBar: this.bottomNavigationBar,
-              body: _body(),
             ),
     );
   }

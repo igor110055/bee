@@ -98,7 +98,11 @@ class _LegalPageState extends State<LegalPage> {
               children: [
                 Row(
                   children: [
-                    Container(
+                    LoadAssetsImage(
+                      "icons/nft_check.png",
+                      color: ColorUtils.FF363B3E,
+                    ),
+                    Expanded(
                       child: Text(
                         "legal_readed".local(),
                         style: TextStyle(

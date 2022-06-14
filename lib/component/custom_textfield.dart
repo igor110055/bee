@@ -210,6 +210,8 @@ class CustomTextField extends StatefulWidget {
     VoidCallback? onPressBack,
     bool enabled = true,
     Color fillColor = Colors.white,
+    String? errText,
+    TextStyle? errTextStyle,
   }) {
     return Padding(
       padding: padding,
@@ -226,7 +228,7 @@ class CustomTextField extends StatefulWidget {
                 style: TextStyle(
                   fontSize: 16.font,
                   fontWeight: FontWeightUtils.regular,
-                  color: ColorUtils.fromHex("#FF8F9397"),
+                  color: ColorUtils.fromHex("#FF363B3E"),
                 ),
               ),
             ),
@@ -274,6 +276,20 @@ class CustomTextField extends StatefulWidget {
                   )
                 : Container(),
           ]),
+          Visibility(
+            visible: errText != null,
+            child: Container(
+              child: Text(
+                errText ?? "",
+                style: errTextStyle ??
+                    TextStyle(
+                      fontSize: 14.font,
+                      fontWeight: FontWeightUtils.regular,
+                      color: ColorUtils.fromHex("#FFB9BFC4"),
+                    ),
+              ),
+            ),
+          ),
         ],
       ),
     );

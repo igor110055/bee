@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import '../models/bee_avatar.dart';
 import '../public.dart';
 import 'dart:ui' as ui;
 
@@ -315,30 +317,40 @@ Widget loadArrowRightIcon() {
   );
 }
 
-final List<Map> beesIcons = [
-  {
-    "image":
-        "https://www.beelaunchpad.org/ipfs/QmY2k9pnxtFDiS4D5XnqN9EcbnC4dnvem1jR29FsbSN4Xr",
-    "title": "KNIGHT BEE",
-  },
-  {
-    "image":
-        "https://www.beelaunchpad.org/ipfs/QmTXVYYsb5joocob7uegZqKCbVRcwXKbnWqN4CMzh1UoXc",
-    "title": "QUEEN BEE",
-  },
-  {
-    "image":
-        "https://www.beelaunchpad.org/ipfs/QmR4VLuaoCTs7XJK1MrrNpHbqMfYKxFkTtT6o5D1mWDdNd",
-    "title": "LUCKY BEE",
-  },
-  {
-    "image":
-        "https://www.beelaunchpad.org/ipfs/Qme9xpZbUHMKG1TxY9yRpCzXbn5nWYaWkAan4szMMowTwQ",
-    "title": "HASH BEE",
-  },
-  {
-    "image":
-        "https://www.beelaunchpad.org/ipfs/Qmf85CVekG3234bzzJsmzgyGRN4hPZi9wcyCemanLseZoY",
-    "title": "BUMBLE BEE",
-  }
+final List<KBeeAvatar> beesIcons = [
+  KBeeAvatar(
+      image:
+          "https://www.beelaunchpad.org/ipfs/QmY2k9pnxtFDiS4D5XnqN9EcbnC4dnvem1jR29FsbSN4Xr",
+      title: "KNIGHT BEE"),
+  KBeeAvatar(
+      image:
+          "https://www.beelaunchpad.org/ipfs/QmTXVYYsb5joocob7uegZqKCbVRcwXKbnWqN4CMzh1UoXc",
+      title: "QUEEN BEE"),
+  KBeeAvatar(
+      image:
+          "https://www.beelaunchpad.org/ipfs/QmR4VLuaoCTs7XJK1MrrNpHbqMfYKxFkTtT6o5D1mWDdNd",
+      title: "LUCKY BEE"),
+  KBeeAvatar(
+      image:
+          "https://www.beelaunchpad.org/ipfs/Qme9xpZbUHMKG1TxY9yRpCzXbn5nWYaWkAan4szMMowTwQ",
+      title: "HASH BEE"),
+  KBeeAvatar(
+      image:
+          "https://www.beelaunchpad.org/ipfs/Qmf85CVekG3234bzzJsmzgyGRN4hPZi9wcyCemanLseZoY",
+      title: "BUMBLE BEE"),
 ];
+
+List<int> getRandromList(int maxCount, int maxNum) {
+  List<int> resultList = [];
+  var rng = Random();
+  int count = 0;
+  while (count < maxCount) {
+    int index = rng.nextInt(maxNum) + 1;
+    if (!resultList.contains(index)) {
+      resultList.add(index);
+      count++;
+    }
+  }
+  resultList.sort();
+  return resultList;
+}

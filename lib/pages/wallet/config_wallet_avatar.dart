@@ -1,3 +1,4 @@
+import 'package:beewallet/utils/custom_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -16,10 +17,38 @@ class ConfigWalletAvatar extends StatefulWidget {
 
 class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
   int _currentIndex = 0;
+  int _currentLeng = 0;
   TextEditingController _nameEC = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _nameEC.addListener(() {
+      var len = _nameEC.text.length;
+      setState(() {
+        _currentLeng = len;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _nameEC.removeListener(() {});
+  }
+
   void _onTapNext() {
+    var text = _nameEC.text;
+    if (text.isEmpty) {
+      HWToast.showText(text: "createwallet_walletname".local());
+      return;
+    }
     String memo = Mnemonic.generateMnemonic();
-    Routers.push(context, BackupMemo(memo: memo, walletID: ''));
+    var avatar = beesIcons[_currentIndex];
+    Routers.push(context, BackupMemo(memo: memo, avatarURL: avatar.image));
   }
 
   @override
@@ -40,11 +69,12 @@ class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
                     titleText: "createwallet_walletname".local(),
                     hintText: "input_name".local(),
                     maxLength: 20,
+                    errText: "input_limit".local() + "：$_currentLeng/20",
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(
-                        top: 35.width, left: 16.width, right: 16.width),
+                        top: 25.width, left: 16.width, right: 16.width),
                     child: Text(
                       "createwallet_tip01".local(),
                       style: TextStyle(
@@ -52,7 +82,7 @@ class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
                     ),
                   ),
                   Container(
-                    height: 320.height,
+                    height: 320.width,
                     alignment: Alignment.topCenter,
                     margin: EdgeInsets.only(top: 35.width, bottom: 35.width),
                     child: Swiper(
@@ -60,8 +90,8 @@ class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
                       loop: false,
                       itemBuilder: (context, index) {
                         var parmas = beesIcons[index];
-                        var image = parmas["image"];
-                        var title = parmas["title"];
+                        var image = parmas.image;
+                        var title = parmas.title;
                         return Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(5.width),
@@ -121,7 +151,10 @@ class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
                   ),
                   Container(
                     padding: EdgeInsets.only(
-                        top: 24.width, left: 16.width, right: 16.width),
+                        top: 24.width,
+                        left: 16.width,
+                        right: 16.width,
+                        bottom: 24.width),
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "createwallet_tip".local(),
@@ -134,7 +167,8 @@ class _ConfigWalletAvatarState extends State<ConfigWalletAvatar> {
             ),
           ),
           NextButton(
-            margin: EdgeInsets.only(left: 16.width, bottom: 16.width),
+            margin: EdgeInsets.only(
+                left: 16.width, right: 24.width, bottom: 24.width),
             onPressed: () {
               _onTapNext();
             },

@@ -47,5 +47,8 @@
     "importwallet_hint01": "Please use space to separate the secret recoveryphrase",
     "importwallet_hint02": "Enter the private key or scan the QR code,case sensitive.",
     "importwallet_hint03": "Invalid Private Key,Please check your key.",
-    "importwallet_hint04": "Invalid word, please check the spelling."
+    "importwallet_hint04": "Invalid word, please check the spelling.",
+    "input_name": "Wallet 2",
+    "input_limit": "Character limit",
+    "input_putchar": "Put the #{index} word here"
 }

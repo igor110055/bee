@@ -9,10 +9,10 @@ import 'package:flutter/services.dart';
 import '../../../public.dart';
 
 class BackupMemo extends StatefulWidget {
-  const BackupMemo({Key? key, required this.memo, required this.walletID})
+  const BackupMemo({Key? key, required this.memo, required this.avatarURL})
       : super(key: key);
   final String memo;
-  final String walletID;
+  final String avatarURL;
 
   @override
   State<BackupMemo> createState() => _BackupMemoState();
@@ -40,7 +40,7 @@ class _BackupMemoState extends State<BackupMemo> {
 
   void _backMemo() {
     Routers.push(
-        context, VerifyMemo(memo: widget.memo, walletID: widget.walletID));
+        context, VerifyMemo(memo: widget.memo, walletID: "widget.walletID"));
   }
 
   void _copyMemo() {
@@ -51,7 +51,7 @@ class _BackupMemoState extends State<BackupMemo> {
   Widget build(BuildContext context) {
     return CustomPageView(
       child: Container(
-        padding: EdgeInsets.all(24.width),
+        padding: EdgeInsets.fromLTRB(24.width, 0, 24.width, 24.width),
         child: Column(
           children: [
             Expanded(
