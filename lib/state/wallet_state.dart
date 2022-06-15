@@ -8,7 +8,6 @@ import 'package:beewallet/model/token_price/tokenprice.dart';
 import 'package:beewallet/model/tokens/collection_tokens.dart';
 import 'package:beewallet/model/transrecord/trans_record.dart';
 import 'package:beewallet/model/wallet/tr_wallet.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/chain_services.dart';
 import 'package:beewallet/net/wallet_services.dart';
 import 'package:beewallet/pages/wallet/config_wallet_avatar.dart';
@@ -54,8 +53,6 @@ class CurrentChooseWalletState with ChangeNotifier {
   TimerUtil? _timer;
   TimerUtil? _priceTimer;
   int _tokenIndex = 0;
-  TRWalletInfo? _walletinfo;
-  TRWalletInfo? get walletinfo => _walletinfo;
   int _homeTokenType = 0;
   int get homeTokenType => _homeTokenType;
   Map<String?, List<NFTModel>> _nftContracts = {};
@@ -116,7 +113,6 @@ class CurrentChooseWalletState with ChangeNotifier {
     _currentWallet = await TRWallet.queryChooseWallet();
     _currencyType = SPManager.getAppCurrencyMode();
     requestAssets();
-    _initSuggortCoinTypes();
     // _configTimerRequest();
     notifyListeners();
     return _currentWallet;
@@ -157,13 +153,9 @@ class CurrentChooseWalletState with ChangeNotifier {
     KNetType netType = SPManager.getNetType();
     String? ethAdress;
     String? chainType;
-    List<TRWalletInfo> infos =
-        await _currentWallet!.queryWalletInfos(coinType: KCoinType.ETH);
-    if (infos.isEmpty) {
-      return;
-    }
-    ethAdress = infos.first.walletAaddress;
-    chainType = infos.first.coinType!.geCoinType().coinTypeString();
+
+    ethAdress = _currentWallet!.walletAaddress;
+    chainType = _currentWallet!.coinType!.geCoinType().coinTypeString();
     if (ethAdress == null) {
       return;
     }
@@ -184,13 +176,9 @@ class CurrentChooseWalletState with ChangeNotifier {
     KNetType netType = SPManager.getNetType();
     String? ethAdress;
     String? chainType;
-    List<TRWalletInfo> infos =
-        await _currentWallet!.queryWalletInfos(coinType: KCoinType.ETH);
-    if (infos.isEmpty) {
-      return;
-    }
-    ethAdress = infos.first.walletAaddress;
-    chainType = infos.first.coinType!.geCoinType().coinTypeString();
+
+    ethAdress = _currentWallet!.walletAaddress;
+    chainType = _currentWallet!.coinType!.geCoinType().coinTypeString();
     if (ethAdress == null) {
       return;
     }
@@ -243,13 +231,9 @@ class CurrentChooseWalletState with ChangeNotifier {
     KNetType netType = SPManager.getNetType();
     String? ethAdress;
     String? chainType;
-    List<TRWalletInfo> infos =
-        await _currentWallet!.queryWalletInfos(coinType: KCoinType.ETH);
-    if (infos.isEmpty) {
-      return;
-    }
-    ethAdress = infos.first.walletAaddress;
-    chainType = infos.first.coinType!.geCoinType().coinTypeString();
+
+    ethAdress = _currentWallet!.walletAaddress;
+    chainType = _currentWallet!.coinType!.geCoinType().coinTypeString();
     if (ethAdress == null) {
       return;
     }
@@ -339,14 +323,6 @@ class CurrentChooseWalletState with ChangeNotifier {
             : KAppLanguage.en_us);
       }
     }
-  }
-
-  void _initSuggortCoinTypes() async {
-    List<TRWalletInfo> infos = await TRWalletInfo.queryWalletInfosByWalletID(
-        _currentWallet?.walletID ?? "");
-    List<KCoinType> coins = infos.map((e) => e.coinType!.geCoinType()).toList();
-    _supportCoinTypes = coins;
-    LogUtil.v("coinscoins " + coins.length.toString());
   }
 
   void assetsHidden(BuildContext context) async {
@@ -442,7 +418,7 @@ class CurrentChooseWalletState with ChangeNotifier {
     initNFTIndex();
     initNFTTokens();
     requestAssets();
-    _initSuggortCoinTypes();
+
     notifyListeners();
     return true;
   }
@@ -453,13 +429,7 @@ class CurrentChooseWalletState with ChangeNotifier {
       bool pushReceive = false}) async {
     _tokenIndex = index;
     final String walletID = _currentWallet!.walletID!;
-    List infos = (await TRWalletInfo.queryWalletInfo(
-        walletID, chooseTokens()!.chainType!));
-    if (infos.isEmpty || infos == null) {
-      return;
-    }
-    _walletinfo = infos.first;
-    LogUtil.v("updateTokenChoose infos " + infos.first.walletAaddress!);
+
     if (pushTransList == true) {
       Routers.push(context, TransferListPage());
       return;
@@ -480,12 +450,6 @@ class CurrentChooseWalletState with ChangeNotifier {
     } else {
       final String walletID = _currentWallet!.walletID!;
       String chainType = nftContracts[index].chainTypeName ?? "";
-      List infos = (await TRWalletInfo.queryWalletInfo(
-          walletID, chainType.chainTypeGetCoinType()!.index));
-      if (infos.isEmpty || infos == null) {
-        return;
-      }
-      _walletinfo = infos.first;
       Routers.push(context, RecervePaymentPage());
     }
   }
@@ -541,7 +505,7 @@ class CurrentChooseWalletState with ChangeNotifier {
                 });
               }, cancelPress: () {});
             },
-            datas: wallet.chainType!.getChainType().getSuppertCoinTypes(),
+            datas: [],
           );
         });
   }
@@ -596,21 +560,9 @@ class CurrentChooseWalletState with ChangeNotifier {
     if (_currentWallet == null) {
       return;
     }
-    List<TRWalletInfo> infos = await _currentWallet!.queryWalletInfos();
+    String walletAaddress = _currentWallet!.walletAaddress!;
     for (int i = 0; i < tokens.length; i++) {
       MCollectionTokens map = tokens[i];
-      String walletAaddress = "";
-      List? info;
-      if (infos.isNotEmpty) {
-        info = infos
-            .where((element) => element.coinType == map.chainType)
-            .toList();
-      }
-      if (info == null || info.isEmpty) {
-        LogUtil.v("element.coinType ${map.token}");
-        continue;
-      }
-      walletAaddress = info.first.walletAaddress!;
       map.balanceOf(walletAaddress, currencyType ?? KCurrencyType.CNY);
     }
   }

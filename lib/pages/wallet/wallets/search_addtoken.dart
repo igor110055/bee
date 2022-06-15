@@ -47,9 +47,7 @@ class _SearchAddTokenState extends State<SearchAddToken> {
     final TRWallet trWallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet!;
-    String? chainType = trWallet.chainType == KChainType.HD.index
-        ? null
-        : trWallet.chainType!.getChainType().getNetTokenType();
+    String? chainType = "";
     String walletID = trWallet.walletID!;
     _page = page;
     List indexTokens = [];
@@ -58,7 +56,7 @@ class _SearchAddTokenState extends State<SearchAddToken> {
       popular = true;
       indexTokens = await WalletServices.getpopularToken(chainType: chainType);
     } else {
-      if (await keywords.checkAddress(KCoinType.ETH) == true) {
+      if (await keywords.checkAddress(KCoinType.BSC) == true) {
         indexTokens = await WalletServices.gettokenList(page, 20,
             tokenName: null,
             tokenContractAddress: keywords,
@@ -87,17 +85,11 @@ class _SearchAddTokenState extends State<SearchAddToken> {
       token.coinType = item["chainType"] ?? "";
       KCoinType? cointYPE = token.coinType!.chainTypeGetCoinType();
       token.chainType = cointYPE?.index;
-      if (cointYPE == KCoinType.TRX) {
-        token.tokenType =
-            token.contract == "0x0000000000000000000000000000000000000000"
-                ? KTokenType.native.index
-                : KTokenType.trc20.index;
-      } else {
-        token.tokenType =
-            token.contract == "0x0000000000000000000000000000000000000000"
-                ? KTokenType.native.index
-                : KTokenType.token.index;
-      }
+      token.tokenType =
+          token.contract == "0x0000000000000000000000000000000000000000"
+              ? KTokenType.native.index
+              : KTokenType.token.index;
+
       token.kNetType = netType.index;
       if (token.chainType == null) {
         assert(token.chainType != null, "有判断失败的数据 ");
@@ -132,9 +124,7 @@ class _SearchAddTokenState extends State<SearchAddToken> {
     final TRWallet trWallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet!;
-    String? chainType = trWallet.chainType == KChainType.HD.index
-        ? null
-        : trWallet.chainType!.getChainType().getNetTokenType();
+    String? chainType = "";
     String walletID = trWallet.walletID!;
     _page = page;
     List<NFTModel> indexnfts = [];
@@ -142,7 +132,7 @@ class _SearchAddTokenState extends State<SearchAddToken> {
       indexnfts =
           await WalletServices.getNftList(pageNum: page, popularFlag: true);
     } else {
-      if (await keywords.checkAddress(KCoinType.ETH) == true) {
+      if (await keywords.checkAddress(KCoinType.BSC) == true) {
         indexnfts = await WalletServices.getNftList(
             pageNum: page, tokenContractAddress: keywords);
       } else {

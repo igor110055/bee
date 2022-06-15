@@ -117,10 +117,7 @@ class _WalletPageState extends State<WalletPage> {
         children: [
           Consumer<CurrentChooseWalletState>(builder: (_, provider, child) {
             return Visibility(
-              visible: (provider.currentWallet?.chainType !=
-                      KChainType.BTC.index &&
-                  (provider.currentWallet?.chainType != KChainType.TRX.index ||
-                      provider.homeTokenType != 1)),
+              visible: true,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: _tapAssets,
@@ -217,7 +214,7 @@ class _WalletPageState extends State<WalletPage> {
                       Container(
                         margin: EdgeInsets.only(top: 16.height),
                         child: Text(
-                          SLOGAN,
+                          "SLOGAN",
                           style: TextStyle(
                             fontWeight: FontWeightUtils.medium,
                             fontSize: 18.font,

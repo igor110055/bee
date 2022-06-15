@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:beewallet/component/share_default.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/utils/share_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +41,9 @@ class _RecervePaymentPageState extends State<RecervePaymentPage> {
     TRWallet wallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet!;
-    TRWalletInfo info =
-        Provider.of<CurrentChooseWalletState>(context, listen: false)
-            .walletinfo!;
-    qrCodeStr = info.walletAaddress!;
-    walletName =
-        info.coinType!.geCoinType().coinTypeString() + "tabbar_wallet".local();
+
+    qrCodeStr = wallet.walletAaddress!;
+    walletName = "";
   }
 
   void _shareImage() async {

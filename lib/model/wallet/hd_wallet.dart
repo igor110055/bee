@@ -1,10 +1,4 @@
-import 'package:beewallet/model/chain/arb.dart';
-import 'package:beewallet/model/chain/avax.dart';
 import 'package:beewallet/model/chain/bsc.dart';
-import 'package:beewallet/model/chain/eth.dart';
-import 'package:beewallet/model/chain/heco.dart';
-import 'package:beewallet/model/chain/matic.dart';
-import 'package:beewallet/model/chain/okchain.dart';
 
 import '../../public.dart';
 
@@ -51,25 +45,11 @@ class HDWallet {
       kLeadType = KLeadType.Memo;
     }
 
-    if (kchainType == KChainType.HD ||
-        kchainType == KChainType.ETH ||
-        kCoinType == KCoinType.ETH ||
-        kCoinType == KCoinType.BSC ||
-        kCoinType == KCoinType.HECO ||
-        kCoinType == KCoinType.OKChain ||
-        kCoinType == KCoinType.Matic ||
-        kCoinType == KCoinType.AVAX ||
-        kCoinType == KCoinType.Arbitrum) {
-      HDWallet ethWallet = (await ETHChain()
+    if (kchainType == KChainType.ETH || kCoinType == KCoinType.BSC) {
+      HDWallet ethWallet = (await BSCChain()
           .importWallet(content: content, pin: pin, kLeadType: kLeadType))!;
       if (kCoinType == null) {
         _hdwallets.add(ethWallet);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.BSC);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.HECO);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.OKChain);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.Matic);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.AVAX);
-        _hdwallets.add(ethWallet.mutableCopy()..coinType = KCoinType.Arbitrum);
       } else {
         ethWallet.coinType = kCoinType;
         _hdwallets.add(ethWallet);

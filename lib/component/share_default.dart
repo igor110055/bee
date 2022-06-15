@@ -40,7 +40,7 @@ class ShareDefaultWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Text(
-                  SLOGAN,
+                  "SLOGAN",
                   style: TextStyle(
                     color: ColorUtils.fromHex("#BA0B0D10"),
                     fontSize: 11.font,

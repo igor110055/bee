@@ -1,7 +1,6 @@
 import 'package:beewallet/component/chain_listtype.dart';
 import 'package:beewallet/model/node/node_model.dart';
 import 'package:beewallet/model/tokens/collection_tokens.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/chain_services.dart';
 import 'package:beewallet/net/wallet_services.dart';
 import 'package:beewallet/pages/scan/scan.dart';
@@ -41,7 +40,7 @@ class _CustomAddNftState extends State<CustomAddNft> {
       HWToast.showText(text: "tokensetting_addnftconadd".local());
       return;
     }
-    if (await _contract.checkAddress(KCoinType.ETH) == false) {
+    if (await _contract.checkAddress(KCoinType.BSC) == false) {
       HWToast.showText(text: "input_addressinvalid".local());
       return;
     }
@@ -52,14 +51,9 @@ class _CustomAddNftState extends State<CustomAddNft> {
     TRWallet _wallet =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currentWallet!;
-    List<TRWalletInfo> infos = await TRWalletInfo.queryWalletInfo(
-        _wallet.walletID!, KCoinType.ETH.index);
-    if (infos.isEmpty) {
-      return;
-    }
     HWToast.showLoading();
     bool result = await WalletServices.addUserNft(
-        _contract, infos.first.walletAaddress!, _name);
+        _contract, _wallet.walletAaddress!, _name);
     if (result == true) {
       HWToast.showText(text: "wallet_inputok".local());
       Future.delayed(const Duration(seconds: 2))

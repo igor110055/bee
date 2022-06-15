@@ -106,121 +106,59 @@ class MCollectionTokens {
   }
 
   Map? generateBalanceParams(String walletAaddress) {
-    if (chainType == KCoinType.BTC.index) {
-    } else if (chainType == KCoinType.TRX.index) {
-      if (isToken == false) {
-      } else {
-        Map params = {};
-        // if (tokenType == KTokenType.trc20.index) {
-        //   String contract_address = TREncode.base58HexString(contract!);
-        //   String owner_address = TREncode.base58HexString(walletAaddress);
-        //   params = {
-        //     "contract_address": contract_address,
-        //     "owner_address": owner_address,
-        //     "function_selector": "balanceOf(address)",
-        //     "parameter": owner_address.padLeft(64, "0")
-        //   };
-        //   return params;
-        // }
-      }
-    } else {
-      Map params = {};
-      if (isToken == false) {
-        params["jsonrpc"] = "2.0";
-        params["method"] = "eth_getBalance";
-        params["params"] = [walletAaddress, "latest"];
-        params["id"] = tokenID;
-      } else if (tokenType == KTokenType.token.index) {
-        String owner = walletAaddress;
-        String data =
-            "0x70a08231000000000000000000000000" + owner.replaceAll("0x", "");
-        params["jsonrpc"] = "2.0";
-        params["method"] = "eth_call";
-        params["params"] = [
-          {"to": contract, "data": data},
-          "latest"
-        ];
-        params["id"] = tokenID;
-      } else if (tokenType == KTokenType.eip721.index) {
-        String data =
-            SignTransactionClient.getEIP721Balance(walletAaddress, contract!);
-        params["method"] = "eth_call";
-        params["params"] = [
-          {"to": contract, "data": data},
-          "latest"
-        ];
-        params["id"] = tokenID;
-      } else if (tokenType == KTokenType.eip1155.index) {
-        String data = SignTransactionClient.getEIP1155Balance(
-            walletAaddress, contract!, tid!);
-        params["jsonrpc"] = "2.0";
-        params["method"] = "eth_call";
-        params["params"] = [
-          {"to": contract, "data": data},
-          "latest"
-        ];
-        params["id"] = tokenID;
-      }
-      return params;
+    Map params = {};
+    if (isToken == false) {
+      params["jsonrpc"] = "2.0";
+      params["method"] = "eth_getBalance";
+      params["params"] = [walletAaddress, "latest"];
+      params["id"] = tokenID;
+    } else if (tokenType == KTokenType.token.index) {
+      String owner = walletAaddress;
+      String data =
+          "0x70a08231000000000000000000000000" + owner.replaceAll("0x", "");
+      params["jsonrpc"] = "2.0";
+      params["method"] = "eth_call";
+      params["params"] = [
+        {"to": contract, "data": data},
+        "latest"
+      ];
+      params["id"] = tokenID;
+    } else if (tokenType == KTokenType.eip721.index) {
+      String data =
+          SignTransactionClient.getEIP721Balance(walletAaddress, contract!);
+      params["method"] = "eth_call";
+      params["params"] = [
+        {"to": contract, "data": data},
+        "latest"
+      ];
+      params["id"] = tokenID;
+    } else if (tokenType == KTokenType.eip1155.index) {
+      String data = SignTransactionClient.getEIP1155Balance(
+          walletAaddress, contract!, tid!);
+      params["jsonrpc"] = "2.0";
+      params["method"] = "eth_call";
+      params["params"] = [
+        {"to": contract, "data": data},
+        "latest"
+      ];
+      params["id"] = tokenID;
     }
+    return params;
   }
 
   void balanceOf(String walletAaddress, KCurrencyType currencyType) async {
     KCoinType coinType = chainType!.geCoinType();
     double _balance = 0;
     double _price = 0;
-    if (coinType == KCoinType.BTC) {
-      dynamic result = await ChainServices.requestBTCDatas(
-          path: "/addrs/$walletAaddress/balance", method: Method.GET);
-      if (result != null && result is Map) {
-        final final_balance = result["final_balance"] ?? 0;
-        BigInt balBInt = BigInt.from(final_balance);
-        _balance = balBInt.tokenDouble(8);
-      }
-    } else if (coinType == KCoinType.TRX) {
-      if (isToken == false) {
-        dynamic result = await ChainServices.requestTRXDatas(
-            path: "/v1/accounts/$walletAaddress", method: Method.GET);
-        if (result != null && result is Map) {
-          bool success = result["success"] as bool;
-          if (success == true) {
-            List data = result["data"] as List;
-            if (data.isNotEmpty) {
-              BigInt bal = BigInt.from(data.first["balance"] ?? 0);
-              _balance = bal.tokenDouble(6);
-            }
-          }
-        }
-      } else {
-        Map params = generateBalanceParams(walletAaddress)!;
-        dynamic result = await ChainServices.requestTRXDatas(
-            path: "/wallet/triggerconstantcontract",
-            method: Method.POST,
-            data: params);
-        if (result != null && result is Map) {
-          dynamic stant_result = result["constant_result"];
-          if (stant_result == null) {
-            return null;
-          }
-          String constant_result = (stant_result as List).first;
-          if (constant_result.isNotEmpty) {
-            constant_result = constant_result.replaceFirst("0x", "");
-            BigInt balBInt = BigInt.parse(constant_result, radix: 16);
-            _balance = balBInt.tokenDouble(decimals!);
-          }
-        }
-      }
-    } else {
-      Map params = generateBalanceParams(walletAaddress)!;
-      dynamic result =
-          await ChainServices.requestDatas(coinType: coinType, params: params);
-      if (result != null && result.keys.contains("result")) {
-        String? bal = result["result"] as String;
-        bal = bal.replaceFirst("0x", "");
-        bal = bal.length == 0 ? "0" : bal;
-        BigInt balBInt = BigInt.parse(bal, radix: 16);
-        _balance = balBInt.tokenDouble(decimals ?? 0);
-      }
+    Map params = generateBalanceParams(walletAaddress)!;
+    dynamic result =
+        await ChainServices.requestDatas(coinType: coinType, params: params);
+    if (result != null && result.keys.contains("result")) {
+      String? bal = result["result"] as String;
+      bal = bal.replaceFirst("0x", "");
+      bal = bal.length == 0 ? "0" : bal;
+      BigInt balBInt = BigInt.parse(bal, radix: 16);
+      _balance = balBInt.tokenDouble(decimals ?? 0);
     }
     TokenPrice? priceModel =
         await TokenPrice.queryTokenPrices(token ?? "", currencyType);
@@ -304,11 +242,6 @@ class MCollectionTokens {
     model.kNetType = netType;
     model.chainType = coinType;
     model.coinType = type.coinTypeString();
-    if (type == KCoinType.TRX) {
-      model.tokenType = KTokenType.trc20.index;
-    } else {
-      model.tokenType = KTokenType.token.index;
-    }
     model.tokenID = model.createTokenID(walletID);
     model.digits = 4;
     MCollectionTokens.insertTokens([model]);

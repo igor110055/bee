@@ -4,9 +4,7 @@ import 'package:beewallet/component/empty_data.dart';
 import 'package:beewallet/component/home_banner.dart';
 import 'package:beewallet/component/wallet_card.dart';
 import 'package:beewallet/model/dapps_record/dapps_record.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/wallet_services.dart';
-import 'package:beewallet/pages/home/home_hotnft.dart';
 import 'package:beewallet/pages/mine/mine_message.dart';
 import 'package:beewallet/utils/date_util.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -405,7 +403,7 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  Routers.push(context, HomeHotNft());
+                  // Routers.push(context, HomeHotNft());
                 },
                 child: Text(
                   "homepage_more".local(),

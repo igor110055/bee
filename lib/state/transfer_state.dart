@@ -1,7 +1,6 @@
 import 'package:beewallet/model/client/sign_client.dart';
 import 'package:beewallet/model/node/node_model.dart';
 import 'package:beewallet/model/tokens/collection_tokens.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/wallet_services.dart';
 import 'package:beewallet/pages/mine/mine_contacts.dart';
 import 'package:beewallet/pages/wallet/transfer/payment_sheet_page.dart';
@@ -21,9 +20,8 @@ class KTransferState with ChangeNotifier {
   TextEditingController get valueEC => _valueEC;
   TextEditingController get remarkEC => _remarkEC;
 
-  TRWalletInfo? _walletInfo;
-  TRWalletInfo? get walletInfo => _walletInfo;
   TRWallet? _wallet;
+  TRWallet? get wallet => _wallet;
   SignTransactionClient? _client;
   MCollectionTokens? _tokens;
 
@@ -45,15 +43,13 @@ class KTransferState with ChangeNotifier {
     if (_tokens == null) {
       return _feeValue + "";
     }
-    return _feeValue +
-        " " +
-        _walletInfo!.coinType!.geCoinType().feeTokenString();
+    return _feeValue + " " + _wallet!.coinType!.geCoinType().feeTokenString();
   }
 
   void sliderChange(double value) {
     _feeOffset = value.toInt().toString();
     String fee = TRWallet.configFeeValue(
-        cointype: _walletInfo!.coinType!,
+        cointype: _wallet!.coinType!,
         beanValue: _gasLimit,
         offsetValue: _feeOffset);
     _feeValue = fee;
@@ -61,8 +57,6 @@ class KTransferState with ChangeNotifier {
   }
 
   void init(BuildContext context) {
-    _walletInfo = Provider.of<CurrentChooseWalletState>(context, listen: false)
-        .walletinfo!;
     _wallet = Provider.of<CurrentChooseWalletState>(context, listen: false)
         .currentWallet!;
     _tokens = Provider.of<CurrentChooseWalletState>(context, listen: false)
@@ -70,7 +64,7 @@ class KTransferState with ChangeNotifier {
     _currencySymbolStr =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
             .currencySymbolStr;
-    NodeModel node = NodeModel.queryNodeByChainType(_walletInfo!.coinType!);
+    NodeModel node = NodeModel.queryNodeByChainType(_wallet!.coinType!);
     if (node.content == null) {
       return;
     }
@@ -100,25 +94,22 @@ class KTransferState with ChangeNotifier {
   }
 
   void initGasData() async {
-    if (_walletInfo?.coinType == KCoinType.BTC.index) {
-      _gasLimit = "500";
-    } else {
-      dynamic result = await WalletServices.getgasPrice(_tokens!.coinType!);
-      if (result == null) {
-        return;
-      }
-      Decimal offset = Decimal.fromInt(10).pow(9);
-      String fastgas = result!["gasNormalPrice"];
-      fastgas = (Decimal.parse(fastgas) / offset).toDecimal().toString();
-      if (_tokens!.tokenType == KTokenType.native.index) {
-        _gasLimit = transferETHGasLimit.toString();
-      } else {
-        _gasLimit = transferERC20GasLimit.toString();
-      }
-      _feeOffset = fastgas;
+    dynamic result = await WalletServices.getgasPrice(_tokens!.coinType!);
+    if (result == null) {
+      return;
     }
+    Decimal offset = Decimal.fromInt(10).pow(9);
+    String fastgas = result!["gasNormalPrice"];
+    fastgas = (Decimal.parse(fastgas) / offset).toDecimal().toString();
+    if (_tokens!.tokenType == KTokenType.native.index) {
+      _gasLimit = transferETHGasLimit.toString();
+    } else {
+      _gasLimit = transferERC20GasLimit.toString();
+    }
+    _feeOffset = fastgas;
+
     String fee = TRWallet.configFeeValue(
-        cointype: _walletInfo!.coinType!,
+        cointype: _wallet!.coinType!,
         beanValue: _gasLimit,
         offsetValue: _feeOffset);
     _feeValue = fee;
@@ -154,7 +145,7 @@ class KTransferState with ChangeNotifier {
             _seleindex = seleindex;
             notifyListeners();
           },
-          feeToken: _walletInfo!.coinType!.geCoinType().feeTokenString(),
+          feeToken: _wallet!.coinType!.geCoinType().feeTokenString(),
           chaintype: _tokens!.coinType!,
           seleindex: _seleindex,
         ));
@@ -167,7 +158,7 @@ class KTransferState with ChangeNotifier {
     HWToast.showLoading();
     bool isToken = _tokens!.isToken;
     int decimals = _tokens!.decimals ?? 0;
-    String from = _walletInfo!.walletAaddress!;
+    String from = _wallet!.walletAaddress!;
     String to = _addressEC.text.trim();
     String amount = _valueEC.text.trim();
     if (_tokens?.tokenType == KTokenType.eip721.index) {
@@ -175,7 +166,7 @@ class KTransferState with ChangeNotifier {
     }
     String remark = _remarkEC.text.trim();
     bool? isValid = false;
-    int coinType = _walletInfo!.coinType!;
+    int coinType = _wallet!.coinType!;
     String feeToken = coinType.geCoinType().feeTokenString();
     isValid = await to.checkAddress(coinType.geCoinType());
     if (isValid == false) {
@@ -193,49 +184,37 @@ class KTransferState with ChangeNotifier {
       return;
     }
 
-    if (coinType != KCoinType.TRX.index) {
-      //trx 系消耗的是能量
-      if (_feeValue == null || _feeValue.isEmpty == true) {
-        _feeValue = TRWallet.configFeeValue(
-            cointype: coinType, beanValue: _gasLimit, offsetValue: _feeOffset);
-      } else {
-        _feeValue = _feeValue
-            .trim()
-            .replaceAll("ETH", "")
-            .replaceAll(_tokens!.token!, "")
-            .replaceAll(" ", "");
-      }
-      if (double.parse(_feeValue) == 0) {
-        HWToast.showText(text: "payment_highfee".local());
+    //trx 系消耗的是能量
+    if (_feeValue == null || _feeValue.isEmpty == true) {
+      _feeValue = TRWallet.configFeeValue(
+          cointype: coinType, beanValue: _gasLimit, offsetValue: _feeOffset);
+    } else {
+      _feeValue = _feeValue
+          .trim()
+          .replaceAll("ETH", "")
+          .replaceAll(_tokens!.token!, "")
+          .replaceAll(" ", "");
+    }
+    if (double.parse(_feeValue) == 0) {
+      HWToast.showText(text: "payment_highfee".local());
+      return;
+    }
+    BigInt feeBig = BigInt.zero;
+    feeBig = _feeValue.tokenInt(18);
+
+    if (isToken == true) {
+      num mainBalance = await _client!.getBalance(from);
+      BigInt mainTokenBig = mainBalance.toString().tokenInt(18);
+      if (feeBig > mainTokenBig) {
+        HWToast.showText(text: "paymenttip_ethnotenough".local());
         return;
       }
-      BigInt feeBig = BigInt.zero;
-      if (coinType == KCoinType.BTC.index) {
-        feeBig = _feeValue.tokenInt(8);
-      } else {
-        feeBig = _feeValue.tokenInt(18);
-      }
-      if (isToken == true) {
-        num mainBalance = await _client!.getBalance(from);
-        BigInt mainTokenBig = mainBalance.toString().tokenInt(18);
-        if (feeBig > mainTokenBig) {
-          HWToast.showText(text: "paymenttip_ethnotenough".local());
-          return;
-        }
-      } else {
-        if (balanceBig == amountBig) {
-          amountBig = balanceBig - feeBig;
-        }
-        if (feeBig + amountBig > balanceBig) {
-          HWToast.showText(text: "paymenttip_ethnotenough".local());
-          return;
-        }
-      }
     } else {
-      //trx不能转给自己
-      //判断新地址
-      if (from == to) {
-        HWToast.showText(text: "paymenttip_sameaddress".local());
+      if (balanceBig == amountBig) {
+        amountBig = balanceBig - feeBig;
+      }
+      if (feeBig + amountBig > balanceBig) {
+        HWToast.showText(text: "paymenttip_ethnotenough".local());
         return;
       }
     }
@@ -281,11 +260,11 @@ class KTransferState with ChangeNotifier {
                 to: to,
                 remark: remark,
                 fee: _feeValue + feeToken,
-                hiddenFee: _walletInfo?.coinType == KCoinType.TRX.index),
+                hiddenFee: false),
             amount: amount + " ${_tokens!.token!}",
             nextAction: () {
               _wallet!.showLockPin(context,
-                  infoCoinType: _walletInfo!.coinType!.geCoinType(),
+                  infoCoinType: _wallet!.coinType!.geCoinType(),
                   confirmPressed: (value) {
                 _startSign(
                   context,
@@ -316,7 +295,7 @@ class KTransferState with ChangeNotifier {
     int? gasPrice = Decimal.tryParse(_feeOffset)?.toBigInt().toInt();
     String? result;
     result = await _client!.transfer(
-        coinType: _walletInfo!.coinType!,
+        coinType: _wallet!.coinType!,
         prv: prv,
         token: _tokens!,
         amount: amount,

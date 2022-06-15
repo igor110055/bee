@@ -150,14 +150,10 @@ class MinerFee extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<KTransferState>(builder: (_, provider, child) {
-      int coinType = provider.walletInfo?.coinType ?? 0;
-      return coinType == KCoinType.BTC.index
-          ? _btcFee(context, provider)
-          : coinType == KCoinType.TRX.index
-              ? Container()
-              : _ethFee(provider, onTap: () {
-                  provider.tapFeeView(context);
-                });
+      int coinType = provider.wallet?.coinType ?? 0;
+      return _ethFee(provider, onTap: () {
+        provider.tapFeeView(context);
+      });
     });
   }
 }

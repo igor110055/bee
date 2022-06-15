@@ -6,7 +6,6 @@ import 'package:beewallet/component/trasnfer_listcell.dart';
 import 'package:beewallet/model/node/node_model.dart';
 import 'package:beewallet/model/tokens/collection_tokens.dart';
 import 'package:beewallet/model/transrecord/trans_record.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/chain_services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -26,7 +25,7 @@ class _TransferListContentState extends State<TransferListContent>
 
   List<TransRecordModel> _dappListData = [];
   MCollectionTokens? _tokens;
-  TRWalletInfo? _trWalletInfo;
+  TRWallet? _trWalletInfo;
   StreamSubscription? _transupTE;
   String? _fingerprint;
   int? _before;
@@ -43,7 +42,7 @@ class _TransferListContentState extends State<TransferListContent>
         .chooseTokens();
     _trWalletInfo =
         Provider.of<CurrentChooseWalletState>(context, listen: false)
-            .walletinfo;
+            .currentWallet;
     LogUtil.v("initState " + widget.type.toString());
     _initData(isRefresh: true);
   }
@@ -73,32 +72,12 @@ class _TransferListContentState extends State<TransferListContent>
 
     String from = _trWalletInfo?.walletAaddress ?? "";
     List<TransRecordModel> datas = [];
-    if (coinType == KCoinType.TRX) {
-      datas = await ChainServices.requestTRXTranslist(
-          kTransDataType: kTransDataType,
-          from: from,
-          fingerprint: _fingerprint,
-          page: _page,
-          onComplation: (String? fingerprint) {
-            _fingerprint = fingerprint;
-          },
-          tokens: _tokens!);
-    } else if (coinType == KCoinType.BTC) {
-      datas = await ChainServices.requestBTCTranslist(
-          kTransDataType: kTransDataType,
-          from: from,
-          before: _before,
-          page: _page);
-      if (datas.isNotEmpty) {
-        _before = datas.last.blockHeight;
-      }
-    } else {
-      datas = await ChainServices.requestETHTranslist(
-          kTransDataType: kTransDataType,
-          from: from,
-          page: _page,
-          tokens: _tokens!);
-    }
+    datas = await ChainServices.requestETHTranslist(
+        kTransDataType: kTransDataType,
+        from: from,
+        page: _page,
+        tokens: _tokens!);
+
     if (mounted) {
       setState(() {
         if (isRefresh == true) {
@@ -110,11 +89,7 @@ class _TransferListContentState extends State<TransferListContent>
 
     refreshController.loadComplete();
     refreshController.refreshCompleted(resetFooterState: true);
-    if (coinType == KCoinType.TRX) {
-      if (_fingerprint == null) {
-        refreshController.loadNoData();
-      }
-    }
+
     if (datas.isEmpty) {
       refreshController.loadNoData();
     }

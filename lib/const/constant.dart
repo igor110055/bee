@@ -9,23 +9,12 @@ import 'dart:ui' as ui;
 
 //链类型
 enum KChainType {
-  HD,
   ETH,
-  BTC,
-  TRX,
 }
 
 //主币
 enum KCoinType {
-  ETH,
   BSC,
-  HECO,
-  OKChain,
-  Matic,
-  AVAX,
-  Arbitrum,
-  BTC,
-  TRX,
 }
 
 enum KLeadType {
@@ -76,7 +65,12 @@ enum KTransState {
   pending, //l1转账打包中 l2 loading 然后l2
 }
 
-enum KTokenType { native, token, trc20, eip721, eip1155 }
+enum KTokenType {
+  native,
+  token,
+  eip721,
+  eip1155,
+}
 
 enum KNetType { Mainnet, Testnet }
 
@@ -103,101 +97,11 @@ enum KDappType {
   recordsandcollect,
 }
 
-extension ChainTypeString on KChainType {
-  String getChainType() {
-    if (this == KChainType.HD) {
-      return "wallets_manager_multichain".local();
-    } else if (this == KChainType.ETH) {
-      return "importwallet_ethchaintype".local();
-    } else if (this == KChainType.BTC) {
-      return "importwallet_btcchaintype".local();
-    } else if (this == KChainType.TRX) {
-      return "importwallet_trxchaintype".local();
-    }
-    return "";
-  }
-
-  String getTokenType() {
-    if (this == KChainType.HD) {
-      return "wallets_manager_multichain".local();
-    } else if (this == KChainType.ETH) {
-      return "ETH,BSC,Heco,OK,Polygon,AVAX,Arbitrum";
-    } else if (this == KChainType.BTC) {
-      return "BTC";
-    } else if (this == KChainType.TRX) {
-      return "TRON";
-    }
-    return "";
-  }
-
-  String? getNetTokenType() {
-    if (this == KChainType.HD) {
-    } else if (this == KChainType.ETH) {
-      return "ETH";
-    } else if (this == KChainType.BTC) {
-      return "BTC";
-    } else if (this == KChainType.TRX) {
-      return "TRON";
-    }
-    return null;
-  }
-
-  List<KCoinType> getSuppertCoinTypes() {
-    if (this == KChainType.HD) {
-      return KCoinType.values;
-    } else if (this == KChainType.ETH) {
-      return [
-        KCoinType.ETH,
-        KCoinType.BSC,
-        KCoinType.HECO,
-        KCoinType.OKChain,
-        KCoinType.Matic,
-        KCoinType.AVAX,
-        KCoinType.Arbitrum
-      ];
-    } else if (this == KChainType.BTC) {
-      return [KCoinType.BTC];
-    } else if (this == KChainType.TRX) {
-      return [KCoinType.TRX];
-    }
-    return [];
-  }
-
-  List<KCoinType> getTokensSuppertCoinTypes() {
-    if (this == KChainType.HD) {
-      List<KCoinType> tokens = KChainType.ETH.getSuppertCoinTypes();
-      tokens.add(KCoinType.TRX);
-      return tokens;
-    } else if (this == KChainType.ETH) {
-      return KChainType.ETH.getSuppertCoinTypes();
-    } else if (this == KChainType.TRX) {
-      return [KCoinType.TRX];
-    }
-    return [];
-  }
-}
-
 extension CoinTypeString on KCoinType {
   String coinTypeString() {
     switch (this) {
       case KCoinType.BSC:
         return "BSC";
-      case KCoinType.ETH:
-        return "ETH";
-      case KCoinType.HECO:
-        return "HECO";
-      case KCoinType.OKChain:
-        return "OKChain";
-      case KCoinType.Matic:
-        return "Polygon";
-      case KCoinType.AVAX:
-        return "AVAX";
-      case KCoinType.Arbitrum:
-        return "Arbitrum";
-      case KCoinType.BTC:
-        return "BTC";
-      case KCoinType.TRX:
-        return "TRON";
       default:
         throw Error();
     }
@@ -207,22 +111,6 @@ extension CoinTypeString on KCoinType {
     switch (this) {
       case KCoinType.BSC:
         return "BNB";
-      case KCoinType.ETH:
-        return "ETH";
-      case KCoinType.HECO:
-        return "HT";
-      case KCoinType.OKChain:
-        return "OKT";
-      case KCoinType.Matic:
-        return "MATIC";
-      case KCoinType.AVAX:
-        return "AVAX";
-      case KCoinType.Arbitrum:
-        return "ETH-ARBI";
-      case KCoinType.BTC:
-        return "BTC";
-      case KCoinType.TRX:
-        return "TRX";
       default:
         throw Error();
     }
@@ -250,10 +138,8 @@ final bool isAndroid = Platform.isAndroid;
 final bool isIOS = Platform.isIOS;
 final String ASSETS_IMG = './assets/images/';
 
-final String SLOGAN = "Aggregation of NFT";
-
 const int transferETHGasLimit = 21000;
-const int transferERC20GasLimit = 21000;
+const int transferERC20GasLimit = 60000;
 
 EventBus eventBus = EventBus();
 
@@ -301,13 +187,6 @@ Future<File> shareImage(GlobalKey repkey) async {
 }
 
 String bsc_apiKey = 'GK3C39199V556I849N46RSPPCJAGYA7RNG';
-String arb_apikey = 'WUFC43UEE3FCW1SKT3QYE4REHNTA24S1Y9';
-String avax_apikey = 'X8IINYPZ7MV6B5H3TC5226E7P3FFWW7AXW';
-String heco_apikey = 'ZR64U734RYXTM57SWM78DIHD9G4X16IKAK';
-String mati_apikey = '';
-
-String alltoken_MainContract = "0x6F0b8B05799332Cb6883f6E4e84d259f6cd6b255";
-String alltoken_TestContract = "0x3eD836A6bC50F6c8edC55ab21D4d0Df7ceADA03f";
 
 Widget loadArrowRightIcon() {
   return LoadAssetsImage(

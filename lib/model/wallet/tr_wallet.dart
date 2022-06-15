@@ -5,11 +5,8 @@ import 'package:beewallet/db/database.dart';
 import 'package:beewallet/db/database_config.dart';
 import 'package:beewallet/model/assets/currency_list.dart';
 import 'package:beewallet/model/chain/bsc.dart';
-import 'package:beewallet/model/chain/eth.dart';
-import 'package:beewallet/model/chain/heco.dart';
 import 'package:beewallet/model/nft/nft_model.dart';
 import 'package:beewallet/model/tokens/collection_tokens.dart';
-import 'package:beewallet/model/wallet/tr_wallet_info.dart';
 import 'package:beewallet/net/url.dart';
 import 'package:beewallet/net/wallet_services.dart';
 import 'package:beewallet/pages/tabbar/tabbar.dart';
@@ -28,8 +25,10 @@ class TRWallet {
   @primaryKey
   String? walletID; //唯一id  助记词hash 或者私钥hash keystore
   String? walletName; //钱包名称
+  String? walletAaddress; //钱包地址
   String? pin; //密码hash
   int? chainType; //链类型
+  int? coinType;
   int? accountState; // 账号状态
   String? encContent; //密文 助记词 或者私钥
   bool? isChoose; //当前选中
@@ -37,34 +36,20 @@ class TRWallet {
   String? pinTip; // 密码提示
   bool? hiddenAssets; //是否隐藏资产
 
-  @ignore
-  List<TRWalletInfo>? walletsInfo;
-
-  TRWallet(
-      {this.walletID,
-      this.walletName,
-      this.pin,
-      this.chainType,
-      this.accountState,
-      this.encContent,
-      this.isChoose,
-      this.leadType,
-      this.pinTip,
-      this.hiddenAssets});
-
-  String getChainType() {
-    for (var element in KChainType.values) {
-      if (chainType == element.index) {
-        return element.getChainType();
-      }
-    }
-    return "";
-  }
-
-  static String randomWalletName() {
-    int random = Random().nextInt(9999);
-    return "Wallet#" + random.toString();
-  }
+  TRWallet({
+    this.walletID,
+    this.walletName,
+    this.pin,
+    this.chainType,
+    this.accountState,
+    this.encContent,
+    this.isChoose,
+    this.leadType,
+    this.pinTip,
+    this.hiddenAssets,
+    this.coinType,
+    this.walletAaddress,
+  });
 
   void showLockPin(
     BuildContext context, {
@@ -238,9 +223,6 @@ class TRWallet {
         TRWalletInfo.insertWallets([infos]);
       }
       String? chainType;
-      if (kChainType != KChainType.HD) {
-        chainType = kChainType.getNetTokenType();
-      }
       List indexTokens = await WalletServices.gettokenList(1, 20,
           defaultFlag: true, chainType: chainType);
       List defaultNFT = [];

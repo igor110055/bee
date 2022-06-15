@@ -38,7 +38,7 @@ class _TransferListPageState extends State<TransferListPage>
             String _imageName = tokens.iconPath ?? "";
             String _balance = tokens.balanceString;
             String _assets = total + tokens.assets;
-            String _address = kwallet.walletinfo!.walletAaddress!;
+            String _address = kwallet.currentWallet!.walletAaddress!;
             return Column(
               children: [
                 Container(

@@ -26,10 +26,8 @@ class WalletsManagetCell extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isChoose = walet.isChoose == true ? true : false;
     String address = "";
-    String chainType = walet.getChainType();
-    if (walet.chainType == KChainType.HD.index) {
-    } else if (walet.chainType == KChainType.ETH.index) {
-      address = walet.walletsInfo?.first.walletAaddress ?? "";
+    if (walet.chainType == KChainType.ETH.index) {
+      address = walet.walletAaddress ?? "";
       address = address.contractAddress();
     }
     bool backupState =
@@ -94,7 +92,7 @@ class WalletsManagetCell extends StatelessWidget {
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10.width),
-                           alignment: Alignment.center,
+                          alignment: Alignment.center,
                           padding:
                               EdgeInsets.only(left: 4.width, right: 4.width),
                           height: 20.width,
@@ -102,7 +100,7 @@ class WalletsManagetCell extends StatelessWidget {
                               color: ColorUtils.blueBGColor,
                               borderRadius: BorderRadius.circular(4)),
                           child: Text(
-                            chainType,
+                            "chainType",
                             style: TextStyle(
                               fontSize: 12.width,
                               fontWeight: FontWeightUtils.medium,

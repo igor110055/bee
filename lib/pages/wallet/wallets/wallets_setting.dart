@@ -22,7 +22,7 @@ class _WalletsSettingState extends State<WalletsSetting> {
 
   void _initData() {
     String? walletName = widget.wallet.walletName;
-    String chainType = widget.wallet.getChainType();
+    String chainType = "";
     _children.add(_buildCell(
         leftTitle: "walletssetting_name".local(), content: walletName));
     _children.add(_buildCell(

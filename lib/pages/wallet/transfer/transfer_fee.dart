@@ -84,7 +84,7 @@ class _TransfeeViewState extends State<TransfeeView> {
   void _tapFee(String newGaslimit, String newGasPrice, int index,
       {bool modifyEC = true}) {
     String fee = TRWallet.configFeeValue(
-        cointype: KCoinType.ETH.index,
+        cointype: KCoinType.BSC.index,
         beanValue: newGaslimit,
         offsetValue: newGasPrice);
     if (modifyEC == true) {

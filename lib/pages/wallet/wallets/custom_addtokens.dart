@@ -102,14 +102,14 @@ class _CustomAddTokensState extends State<CustomAddTokens> {
   }
 
   void _onTapChain() {
-    Provider.of<CurrentChooseWalletState>(context, listen: false).onTapChain(
-        context, _wallet!.chainType!.getChainType().getTokensSuppertCoinTypes(),
-        (p0) {
-      setState(() {
-        _chooseType = p0;
-      });
-      _initData();
-    });
+    // Provider.of<CurrentChooseWalletState>(context, listen: false).onTapChain(
+    //     context, _wallet!.chainType!.getChainType().getTokensSuppertCoinTypes(),
+    //     (p0) {
+    //   setState(() {
+    //     _chooseType = p0;
+    //   });
+    //   _initData();
+    // });
   }
 
   @override

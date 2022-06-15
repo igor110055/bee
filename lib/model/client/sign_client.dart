@@ -47,47 +47,20 @@ class SignTransactionClient {
   }) async {
     try {
       String? result;
-      if (coinType == KCoinType.BTC.index) {
-        result = await _signBtc(
-            prv: prv,
-            token: token,
-            amount: amount,
-            to: to,
-            isCustomfee: isCustomfee,
-            from: from,
-            fee: fee,
-            gasPrice: gasPrice,
-            maxGas: maxGas,
-            nonce: nonce,
-            input: input);
-      } else if (coinType == KCoinType.TRX.index) {
-        result = await _signTRX(
-            prv: prv,
-            token: token,
-            amount: amount,
-            to: to,
-            isCustomfee: isCustomfee,
-            from: from,
-            fee: fee,
-            gasPrice: gasPrice,
-            maxGas: maxGas,
-            nonce: nonce,
-            input: input);
-      } else {
-        result = await _signEth(
-            prv: prv,
-            token: token,
-            amount: amount,
-            to: to,
-            isCustomfee: isCustomfee,
-            data: data,
-            from: from,
-            fee: fee,
-            gasPrice: gasPrice,
-            maxGas: maxGas,
-            nonce: nonce,
-            input: input);
-      }
+      result = await _signEth(
+          prv: prv,
+          token: token,
+          amount: amount,
+          to: to,
+          isCustomfee: isCustomfee,
+          data: data,
+          from: from,
+          fee: fee,
+          gasPrice: gasPrice,
+          maxGas: maxGas,
+          nonce: nonce,
+          input: input);
+
       LogUtil.v("Transaction tx $result");
       if (result == null || result.isEmpty) {
         throw "交易失败";
@@ -401,31 +374,6 @@ class SignTransactionClient {
     return {
       "jsonrpc": "2.0",
       "id": tid,
-      "method": "eth_call",
-      "params": [
-        {"to": contract, "data": data},
-        "latest"
-      ]
-    };
-  }
-
-  static Map get721UserAllTokens(String from, String nftContract) {
-    String contract = SPManager.getNetType() == KNetType.Mainnet
-        ? alltoken_MainContract
-        : alltoken_TestContract;
-
-    final contractAddress = EthereumAddress.fromHex(contract);
-    final dc = DeployedContract(_erc721Abi, contractAddress);
-    final function = dc.function('userAllTokens');
-    String data = bytesToHex(
-        function.encodeCall([
-          EthereumAddress.fromHex(nftContract),
-          EthereumAddress.fromHex(from)
-        ]),
-        include0x: true);
-    return {
-      "jsonrpc": "2.0",
-      "id": contract,
       "method": "eth_call",
       "params": [
         {"to": contract, "data": data},

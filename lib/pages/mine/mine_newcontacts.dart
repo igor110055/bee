@@ -58,12 +58,12 @@ class _MineNewContactsState extends State<MineNewContacts> {
   }
 
   void _onTapChain() {
-    Provider.of<CurrentChooseWalletState>(context, listen: false)
-        .onTapChain(context, KChainType.HD.getSuppertCoinTypes(), (p0) {
-      setState(() {
-        _chooseType = p0;
-      });
-    });
+    // Provider.of<CurrentChooseWalletState>(context, listen: false)
+    //     .onTapChain(context, KChainType.HD.getSuppertCoinTypes(), (p0) {
+    //   setState(() {
+    //     _chooseType = p0;
+    //   });
+    // });
   }
 
   Widget _buildText(String text) {

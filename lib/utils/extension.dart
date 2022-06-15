@@ -18,30 +18,6 @@ extension StringUtil on String {
     if (toLowerCase().contains("bsc")) {
       return KCoinType.BSC;
     }
-    if (toLowerCase().contains("eth")) {
-      return KCoinType.ETH;
-    }
-    if (toLowerCase().contains("heco")) {
-      return KCoinType.HECO;
-    }
-    if (toLowerCase().contains("okchain")) {
-      return KCoinType.OKChain;
-    }
-    if (toLowerCase().contains("polygon")) {
-      return KCoinType.Matic;
-    }
-    if (toLowerCase().contains("avax")) {
-      return KCoinType.AVAX;
-    }
-    if (toLowerCase().contains("arbitrum")) {
-      return KCoinType.Arbitrum;
-    }
-    if (toLowerCase().contains("btc")) {
-      return KCoinType.BTC;
-    }
-    if (toLowerCase().contains("tron")) {
-      return KCoinType.TRX;
-    }
   }
 
   String breakWord() {
@@ -98,13 +74,6 @@ extension StringUtil on String {
         RegExp reg = RegExp(regex);
         print("checkPrv $this hasMatch${reg.hasMatch(this)} regex $regex");
         result = reg.hasMatch(this);
-      }
-      if (kChainType == KChainType.BTC) {
-        final originprv = wif.decode(this);
-        result = true;
-      }
-      if (kChainType == KChainType.TRX) {
-        result = true;
       }
 
       return result;
@@ -278,7 +247,7 @@ extension Numextension on num {
         return item;
       }
     }
-    return KChainType.HD;
+    return KChainType.ETH;
   }
 
   KLeadType getLeadType() {
@@ -298,52 +267,19 @@ extension Numextension on num {
         return item;
       }
     }
-    return KCoinType.ETH;
+    return KCoinType.BSC;
   }
 
   KCoinType chainGetCoinType() {
-    if (this == 1 || this == 4) {
-      return KCoinType.ETH;
-    }
-    if (this == 42161 || this == 421611) {
-      return KCoinType.Arbitrum;
-    }
-    if (this == 43114 || this == 43113) {
-      return KCoinType.AVAX;
-    }
     if (this == 56 || this == 97) {
       return KCoinType.BSC;
     }
-    if (this == 128 || this == 256) {
-      return KCoinType.HECO;
-    }
-    if (this == 137 || this == 80001) {
-      return KCoinType.Matic;
-    }
-    if (this == 66 || this == 65) {
-      return KCoinType.OKChain;
-    }
-    return KCoinType.OKChain;
+    return KCoinType.BSC;
   }
 
   KCoinType? getDappSuppertCoinType() {
-    if (this == 4) {
-      return KCoinType.Arbitrum;
-    }
-    if (this == 5) {
-      return KCoinType.AVAX;
-    }
-    if (this == 6) {
-      return KCoinType.Matic;
-    }
-    if (this == 7) {
-      return KCoinType.HECO;
-    }
     if (this == 8) {
       return KCoinType.BSC;
-    }
-    if (this == 9) {
-      return KCoinType.ETH;
     }
   }
 
